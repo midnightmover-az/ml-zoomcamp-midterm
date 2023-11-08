@@ -50,12 +50,12 @@ healthy_patient = {
 }
 
 
-print(unhealthy_patient)
+print("Test Patient Data: ", unhealthy_patient)
 response = requests.post(url, json=unhealthy_patient).json()
 print(response)
 
 
-print(healthy_patient)
+print("Test Patient Data: ", healthy_patient)
 response = requests.post(url, json=healthy_patient).json()
 print(response)
 

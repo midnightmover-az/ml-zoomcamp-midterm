@@ -52,9 +52,9 @@ def predict():
     X = pd.DataFrame.from_records([patient] )
     print( X )
 
-    prediction = model.predict_proba( X )[0, 0]
+    prediction = model.predict_proba( X )[0, 1]
 
-    print( prediction)
+    print( prediction )
 
     heart_atack_risk =  prediction >= treshold
 
