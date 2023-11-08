@@ -10,7 +10,15 @@ from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import OneHotEncoder
 
 #from xgboost import XGBClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import (
+    confusion_matrix,
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score
+)
+
+from xgboost import XGBClassifier
 
 from sklearn.linear_model import Ridge
 
@@ -203,6 +211,33 @@ accuracy = accuracy_score(y_test, predictions)
 print( "Logistic Full Train Regression Accuracy=", accuracy )
 
 
+xgbModel2 = XGBClassifier(n_estimators = 500)
+xgbModel2.set_params( eta=0.01 )
+xgbModel2.fit(df_full_train, y_full_train)
+# make predictions for test data
+y_pred = xgbModel2.predict(df_test)
+y_pred_proba = xgbModel2.predict_proba(df_test)[:,1]
+#predictions = [round(value) for value in y_pred]
+display(y_pred)
+predictions = y_pred
+
+display( y_pred_proba )
+predictions_proba = [ value > treshHold for value in y_pred_proba]
+#display( predictions_proba )
+#predictions = predictions_proba
+
+#display(predictions)
+# evaluate predictions
+accuracy = accuracy_score(y_test, predictions)
+precision = precision_score(y_test, predictions)
+recall = recall_score(y_test, predictions)
+f1score = f1_score(y_test, predictions)
+
+print(f"Precision = {precision}")
+print(f"Recall = {recall}")
+print(f"F1 Score = {f1score}")
+print( "XG Boost Accuracy Full Test=", accuracy )
+
 ########################################################################################################################
 ######  Save the Model to a file  ######################################################################################
 ########################################################################################################################
@@ -210,11 +245,11 @@ print( "Logistic Full Train Regression Accuracy=", accuracy )
 import pickle
 
 #output_file = f'regressionModel.bin'
-output_file = f'logisticRegressionModel.bin'
+output_file = f'xgBoostModel.bin'
 
 # Sccond Logistic Regression model has good enough performance so I am saving that model
 
 with open(output_file, 'wb') as f_out:
-    pickle.dump((logmodel2), f_out)
+    pickle.dump((xgbModel2), f_out)
 
 print(f'the model is saved to {output_file}')

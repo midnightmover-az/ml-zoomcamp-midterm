@@ -12,6 +12,7 @@ pandas = "*"
 gunicorn = "*"
 ipython = "*"
 seaborn = "*"
+xgboost = "*"
 
 [dev-packages]
 

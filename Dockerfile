@@ -8,7 +8,8 @@ WORKDIR /app
 
 COPY ["Pipfile", "Pipfile.lock", "./"]
 
-COPY logisticRegressionModel.bin /'logisticRegressionModel.bin'
+#COPY logisticRegressionModel.bin /'logisticRegressionModel.bin'
+COPY xgBoostModel.bin /xgBoostModel.bin
 
 RUN pipenv install --system --deploy
 

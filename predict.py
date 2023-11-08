@@ -4,17 +4,18 @@ from flask import Flask
 from flask import request
 from flask import jsonify
 import pandas as pd
+from xgboost import XGBClassifier
 
 
-#model_file = 'regressionModel.bin'
-model_file = 'logisticRegressionModel.bin'
+#model_file = 'logisticRegressionModel.bin'
+model_file = 'xgBoostModel.bin'
 
-treshold = 1;
+#treshold = 1;
 
 with open(model_file, 'rb') as f_in:
     model = pickle.load(f_in)
 
-app = Flask('churn')
+app = Flask('heart')
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -52,14 +53,14 @@ def predict():
     X = pd.DataFrame.from_records([patient] )
     print( X )
 
-    prediction = model.predict_proba( X )[0, 1]
+    prediction_proba = model.predict_proba( X )[0, 1]
 
-    print( prediction )
+    print( "prediction_proba = ", prediction_proba  )
 
-    heart_atack_risk =  prediction >= treshold
+    # heart_atack_risk =  prediction >= treshold
 
     result = {
-        'heart_atack_risk': prediction
+        'heart_atack_risk': prediction_proba
     }
 
     return jsonify(result)
